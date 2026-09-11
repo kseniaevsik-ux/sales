@@ -1,307 +1,242 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ArtPro — калькулятор потолков</title>
-<style>
-:root{
-  --bg:#f5f6f8;--card:#fff;--text:#20242b;--muted:#7b818c;
-  --line:#e5e7eb;--accent:#17191d;--accent2:#f0f1f3;--success:#16834b;
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ArtPro — калькулятор потолков</title><style>
+:root{--bg:#f5f6f8;--card:#fff;--text:#20242b;--muted:#7b818c;--line:#e5e7eb;--accent:#17191d;--success:#16834b;--danger:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}.app{display:flex;min-height:100vh}.sidebar{width:245px;background:#17191d;color:#fff;padding:24px 16px;position:fixed;inset:0 auto 0 0}.logo{font-size:22px;font-weight:850;padding:8px 12px 28px}.logo span{color:#9da3ad}.nav button{width:100%;border:0;background:transparent;color:#b9bec7;text-align:left;padding:13px 14px;border-radius:10px;cursor:pointer;margin-bottom:5px}.nav button.active,.nav button:hover{background:#292c32;color:#fff}.nav small{display:block;color:#686e78;padding:22px 14px 8px;text-transform:uppercase;font-size:10px;letter-spacing:.12em}
+.main{margin-left:245px;width:calc(100% - 245px);padding:28px 34px 50px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}h1{font-size:27px;margin:0 0 5px}.subtitle{color:var(--muted);font-size:14px}.status{font-size:12px;color:var(--success);background:#eaf7f0;padding:8px 11px;border-radius:20px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:20px}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:22px;box-shadow:0 2px 8px #00000006}.section-title{font-size:16px;font-weight:750;margin:0 0 18px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.field label{display:block;font-size:12px;color:#666d77;margin-bottom:7px}.field input,.field select{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px 12px;background:#fff;outline:none}.field input:focus,.field select:focus{border-color:#9ca3af}.full{grid-column:1/-1}.divider{height:1px;background:var(--line);margin:23px 0}
+.profile-list{display:grid;gap:10px}.profile-row{display:grid;grid-template-columns:1fr 120px 38px;gap:9px;align-items:end;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fafafa}.profile-row .field label{font-size:11px}.icon-btn{border:0;background:#eee;border-radius:8px;height:40px;cursor:pointer}.icon-btn:hover{background:#e4e5e7}.add-profile{margin-top:10px;border:1px dashed #c9cdd3;background:#fff;padding:10px 13px;border-radius:9px;cursor:pointer;width:100%}
+.summary{position:sticky;top:25px}.total{font-size:36px;font-weight:800;letter-spacing:-1px;margin:8px 0 4px}.total-label{color:var(--muted);font-size:12px}.row{display:flex;justify-content:space-between;gap:15px;padding:10px 0;border-bottom:1px solid #f0f1f3;font-size:13px}.row:last-child{border-bottom:0}.row span:last-child{font-weight:650}.total-row{font-size:15px;padding-top:15px}.actions{display:flex;gap:9px;margin-top:18px}.btn{border:0;border-radius:9px;padding:11px 14px;cursor:pointer;font-weight:650}.btn.primary{background:#17191d;color:#fff;flex:1}.btn.secondary{background:#eef0f2;color:#30343b}.page{display:none}.page.active{display:block}
+.price-wrap{overflow:auto}.price-table{width:100%;border-collapse:collapse;min-width:760px}.price-table th{text-align:left;color:var(--muted);font-size:11px;font-weight:600;padding:0 10px 11px}.price-table td{padding:10px;border-top:1px solid var(--line);font-size:12px}.price-table input{width:110px;padding:8px;border:1px solid var(--line);border-radius:7px}.badge{display:inline-block;padding:4px 7px;border-radius:6px;background:#f0f1f3;font-size:10px}.note{margin-top:15px;color:var(--muted);font-size:12px;line-height:1.5}
+.history-item{border:1px solid var(--line);border-radius:11px;padding:15px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:15px}.history-name{font-weight:750}.history-meta{font-size:12px;color:var(--muted);margin-top:4px}.history-total{font-weight:800;white-space:nowrap}.history-actions{display:flex;gap:7px}.mini{border:0;background:#eef0f2;border-radius:7px;padding:8px 10px;cursor:pointer}.empty{padding:35px;text-align:center;color:var(--muted)}
+.price-search{margin-bottom:16px}.price-search input{width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:10px;outline:none;font-size:14px}
+.additional-list{display:flex;flex-direction:column;gap:10px}.additional-row{display:grid;grid-template-columns:minmax(0,1fr) 100px 130px 34px;gap:9px;align-items:end;border:1px solid var(--line);border-radius:10px;padding:10px}
+.additional-row .field label{margin-bottom:5px}.additional-row .cost{font-weight:750;font-size:13px;padding-bottom:11px;text-align:right;white-space:nowrap}
+.icon-btn{border:0;background:#f0f1f3;border-radius:8px;height:36px;cursor:pointer;font-size:20px}.add-profile{margin-top:12px;border:1px dashed #cfd3d8;background:#fafafa;border-radius:9px;padding:10px 13px;cursor:pointer}
+@media(max-width:700px){.additional-row{grid-template-columns:1fr 90px 110px 34px}}
+
+@media(max-width:900px){.sidebar{width:190px}.main{margin-left:190px;width:calc(100% - 190px);padding:22px}.grid{grid-template-columns:1fr}.summary{position:static}}@media(max-width:650px){.sidebar{position:static;width:100%;min-height:auto}.app{display:block}.main{margin:0;width:100%}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.profile-row{grid-template-columns:1fr 100px 38px}}
+
+@media print{
+  @page{margin:12mm}
+  .sidebar{display:none !important}
+  .main{margin-left:0 !important;width:100% !important;padding:0 !important}
+  .topbar{margin-bottom:16px}
+  .actions,.nav,.status{display:none !important}
+  .grid{grid-template-columns:minmax(0,1fr) 320px !important}
+  .card{box-shadow:none}
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-button,input,select{font:inherit}
-.app{display:flex;min-height:100vh}
-.sidebar{width:245px;background:#17191d;color:#fff;padding:24px 16px;position:fixed;inset:0 auto 0 0}
-.logo{font-size:20px;font-weight:800;padding:8px 12px 28px}
-.logo span{color:#aeb4bd}
-.nav button{width:100%;border:0;background:transparent;color:#b9bec7;text-align:left;padding:13px 14px;border-radius:10px;cursor:pointer;margin-bottom:5px}
-.nav button.active,.nav button:hover{background:#292c32;color:#fff}
-.nav small{display:block;color:#686e78;padding:22px 14px 8px;text-transform:uppercase;font-size:10px;letter-spacing:.12em}
-.main{margin-left:245px;width:calc(100% - 245px);padding:28px 34px 50px}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
-h1{font-size:27px;margin:0 0 5px}.subtitle{color:var(--muted);font-size:14px}
-.status{font-size:12px;color:var(--success);background:#eaf7f0;padding:8px 11px;border-radius:20px}
-.grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:20px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:22px;box-shadow:0 2px 8px #00000006}
-.section-title{font-size:16px;font-weight:750;margin:0 0 18px}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.field label{display:block;font-size:12px;color:#666d77;margin-bottom:7px}
-.field input,.field select{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px 12px;background:#fff;outline:none}
-.field input:focus,.field select:focus{border-color:#9ca3af}
-.full{grid-column:1/-1}
-.divider{height:1px;background:var(--line);margin:23px 0}
-.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.check{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:9px;padding:10px}
-.check input{accent-color:#17191d}
-.summary{position:sticky;top:25px}
-.total{font-size:36px;font-weight:800;letter-spacing:-1px;margin:8px 0 4px}
-.total-label{color:var(--muted);font-size:12px}
-.row{display:flex;justify-content:space-between;gap:15px;padding:10px 0;border-bottom:1px solid #f0f1f3;font-size:13px}
-.row:last-child{border-bottom:0}
-.row span:last-child{font-weight:650}
-.total-row{font-size:15px;padding-top:15px}
-.actions{display:flex;gap:9px;margin-top:18px}
-.btn{border:0;border-radius:9px;padding:11px 14px;cursor:pointer;font-weight:650}
-.btn.primary{background:#17191d;color:#fff;flex:1}.btn.secondary{background:#eef0f2;color:#30343b}
-.page{display:none}.page.active{display:block}
-.price-table{width:100%;border-collapse:collapse}
-.price-table th{text-align:left;color:var(--muted);font-size:11px;font-weight:600;padding:0 10px 11px}
-.price-table td{padding:12px 10px;border-top:1px solid var(--line);font-size:13px}
-.price-table input{width:110px;padding:8px;border:1px solid var(--line);border-radius:7px}
-.price-table select{padding:8px;border:1px solid var(--line);border-radius:7px}
-.badge{display:inline-block;padding:4px 7px;border-radius:6px;background:#f0f1f3;font-size:11px}
-.add{margin-top:15px}
-.note{margin-top:15px;color:var(--muted);font-size:12px;line-height:1.5}
-.history-item{border:1px solid var(--line);border-radius:11px;padding:15px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.history-name{font-weight:750}.history-meta{font-size:12px;color:var(--muted);margin-top:4px}.history-total{font-weight:800;white-space:nowrap}.history-actions{display:flex;gap:7px}.mini{border:0;background:#eef0f2;border-radius:7px;padding:8px 10px;cursor:pointer}
-.empty{padding:35px;text-align:center;color:var(--muted)}
-@media(max-width:900px){.sidebar{width:190px}.main{margin-left:190px;width:calc(100% - 190px);padding:22px}.grid{grid-template-columns:1fr}.summary{position:static}}
-@media(max-width:650px){.sidebar{position:static;width:100%;min-height:auto}.app{display:block}.main{margin:0;width:100%}.form-grid{grid-template-columns:1fr}.checks{grid-template-columns:1fr}.full{grid-column:auto}}
-</style>
-</head>
-<body>
-<div class="app">
-<aside class="sidebar">
-  <div class="logo">Art<span>Pro</span></div>
-  <nav class="nav">
-    <button class="active" onclick="showPage('calc',this)">▣ &nbsp; Расчёт</button>
-    <button onclick="showPage('history',this)">◷ &nbsp; История</button>
-    <button onclick="showPage('price',this)">₽ &nbsp; Прайс</button>
-    <small>Сервис</small>
-    <button onclick="newCalc()">＋ &nbsp; Новый расчёт</button>
-  </nav>
-</aside>
-
+</style></head><body>
+<div class="app"><aside class="sidebar"><div class="logo">Art<span>Pro</span></div>
+<nav class="nav">
+<button class="active" onclick="showPage('calc',this)">▣ &nbsp; Расчёт</button>
+<button onclick="showPage('history',this)">◷ &nbsp; История</button>
+<button onclick="showPage('price',this)">₽ &nbsp; Прайс</button>
+<small>Сервис</small><button onclick="newCalc()">＋ &nbsp; Новый расчёт</button>
+</nav></aside>
 <main class="main">
-<section id="calc" class="page active">
-  <div class="topbar">
-    <div><h1>Расчёт стоимости</h1><div class="subtitle">Предварительный расчёт натяжного потолка</div></div>
-    <div class="status">● Прайс актуален</div>
-  </div>
 
-  <div class="grid">
-    <div>
-      <div class="card">
-        <div class="section-title">1. Клиент</div>
-        <div class="form-grid">
-          <div class="field"><label>Имя клиента</label><input id="clientName" type="text" placeholder="Например, Анна"></div>
-          <div class="field"><label>Номер телефона</label><input id="clientPhone" type="tel" placeholder="+7 (___) ___-__-__"></div>
-        </div>
-        <div class="divider"></div>
-        <div class="section-title">2. Размеры помещения</div>
-        <div class="form-grid">
-          <div class="field"><label>Площадь, м²</label><input id="area" type="number" min="0" step="0.1" value="30"></div>
-          <div class="field"><label>Периметр, м</label><input id="perimeter" type="number" min="0" step="0.1" value="22"></div>
-          <div class="field"><label>Количество углов</label><input id="corners" type="number" min="0" value="4"></div>
-          <div class="field"><label>Количество помещений</label><input id="rooms" type="number" min="1" value="1"></div>
-        </div>
+<section id="calc" class="page active"><div class="topbar"><div><h1>Расчёт стоимости</h1><div class="subtitle">Предварительный расчёт натяжного потолка</div></div><div class="status">● Прайс из файла загружен</div></div>
+<div class="grid"><div>
+<div class="card">
+<div class="section-title">1. Клиент</div><div class="form-grid">
+<div class="field"><label>Имя клиента</label><input id="clientName" placeholder="Например, Анна"></div>
+<div class="field"><label>Номер телефона</label><input id="clientPhone" type="tel" placeholder="+7 (___) ___-__-__"></div>
+</div><div class="divider"></div>
+<div class="section-title">2. Размеры помещения</div><div class="form-grid">
+<div class="field"><label>Площадь, м²</label><input id="area" type="number" min="0" step="0.1" value="30"></div>
+<div class="field"><label>Периметр, м</label><input id="perimeter" type="number" min="0" step="0.1" value="22"></div>
+<div class="field"><label>Количество углов</label><input id="corners" type="number" min="0" value="4"></div>
+<div class="field"><label>Количество помещений</label><input id="rooms" type="number" min="1" value="1"></div>
+</div><div class="divider"></div>
 
-        <div class="divider"></div>
-        <div class="section-title">3. Полотно</div>
-        <div class="form-grid">
-          <div class="field"><label>Тип полотна</label>
-            <select id="material"><option value="850">ПВХ матовое</option><option value="950">ПВХ сатиновое</option><option value="1050">ПВХ глянцевое</option><option value="1450">Тканевое</option></select>
-          </div>
-          <div class="field"><label>Цвет</label>
-            <select><option>Белый</option><option>Цветной</option><option>По каталогу</option></select>
-          </div>
-        </div>
+<div class="section-title">3. Профиль по периметру</div>
+<div class="subtitle" style="margin:-10px 0 15px">Можно комбинировать разные профили. Например: 12 м ПВХ с маскировкой + 10 м теневого Бизон.</div>
+<div id="profiles" class="profile-list"></div>
+<button class="add-profile" onclick="addProfile()">＋ Добавить ещё один тип профиля</button>
 
-        <div class="divider"></div>
-        <div class="section-title">4. Свет и дополнительные элементы</div>
-        <div class="form-grid">
-          <div class="field"><label>Точечные светильники, шт.</label><input id="spots" type="number" min="0" value="8"></div>
-          <div class="field"><label>Люстры, шт.</label><input id="chandeliers" type="number" min="0" value="1"></div>
-          <div class="field"><label>Обход труб, шт.</label><input id="pipes" type="number" min="0" value="2"></div>
-          <div class="field"><label>Карниз / закладная, м</label><input id="cornice" type="number" min="0" step="0.1" value="0"></div>
-          <div class="field"><label>Ниша, м</label><input id="niche" type="number" min="0" step="0.1" value="0"></div>
-          <div class="field"><label>Доп. работы, ₽</label><input id="extra" type="number" min="0" value="0"></div>
-          <div class="field full"><label>Скидка, %</label><input id="discount" type="number" min="0" max="100" value="0"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="summary">
-      <div class="card">
-        <div class="total-label">ИТОГО К ОПЛАТЕ</div>
-        <div class="total" id="total">0 ₽</div>
-        <div class="subtitle">Предварительная стоимость</div>
-        <div class="divider"></div>
-        <div class="row"><span>Полотно</span><span id="rMaterial">0 ₽</span></div>
-        <div class="row"><span>Монтаж</span><span id="rInstall">0 ₽</span></div>
-        <div class="row"><span>Периметр</span><span id="rPerimeter">0 ₽</span></div>
-        <div class="row"><span>Углы</span><span id="rCorners">0 ₽</span></div>
-        <div class="row"><span>Свет</span><span id="rLight">0 ₽</span></div>
-        <div class="row"><span>Доп. элементы</span><span id="rExtra">0 ₽</span></div>
-        <div class="row"><span>Доп. работы</span><span id="rWorks">0 ₽</span></div>
-        <div class="row"><span>Скидка</span><span id="rDiscount">0 ₽</span></div>
-        <div class="row total-row"><span>Итого</span><span id="rTotal">0 ₽</span></div>
-        <div class="actions"><button class="btn primary" onclick="saveCalculation()">Сохранить расчёт</button><button class="btn secondary" onclick="window.print()">Печать / PDF</button></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="history" class="page">
-  <div class="topbar">
-    <div><h1>История расчётов</h1><div class="subtitle">Сохранённые расчёты клиентов</div></div>
-    <div class="status" id="historyCount">0 расчётов</div>
-  </div>
-  <div class="card">
-    <div id="historyBody"></div>
-  </div>
-</section>
-
-<section id="price" class="page">
-  <div class="topbar">
-    <div><h1>Прайс</h1><div class="subtitle">Единый справочник цен для калькулятора</div></div>
-    <div class="status">● Изменения сохраняются</div>
-  </div>
-  <div class="card">
-    <table class="price-table">
-      <thead><tr><th>Категория</th><th>Позиция</th><th>Ед.</th><th>Цена</th></tr></thead>
-      <tbody id="priceBody"></tbody>
-    </table>
-    <button class="btn secondary add" onclick="addPrice()">＋ Добавить позицию</button>
-    <div class="note">Демонстрационный прайс. Изменение цены автоматически влияет на расчёт. Позже этот справочник можно заменить вашим реальным прайсом.</div>
-  </div>
-</section>
-</main>
+<div class="divider"></div><div class="section-title">4. Полотно</div><div class="form-grid">
+<div class="field"><label>Полотно</label><select id="material"></select></div>
+<div class="field"><label>Цвет</label><select><option>Белый</option><option>Цветной</option><option>По каталогу</option></select></div>
 </div>
 
+<div class="divider"></div><div class="section-title">5. Свет и дополнительные элементы</div><div class="form-grid">
+<div class="field"><label>Точечные светильники, шт.</label><input id="spots" type="number" min="0" value="8"></div>
+<div class="field"><label>Люстры, шт.</label><input id="chandeliers" type="number" min="0" value="1"></div>
+<div class="field"><label>Обход труб, шт.</label><input id="pipes" type="number" min="0" value="2"></div>
+<div class="field"><label>Карниз / закладная, м</label><input id="cornice" type="number" min="0" step="0.1" value="0"></div>
+<div class="field"><label>Ниша, м</label><input id="niche" type="number" min="0" step="0.1" value="0"></div>
+<div class="field"><label>Доп. работы, ₽</label><input id="extra" type="number" min="0" value="0"></div>
+<div class="field full"><label>Скидка, %</label><input id="discount" type="number" min="0" max="100" value="0"></div>
+</div>
+
+<div class="divider"></div>
+<div class="section-title">6. Дополнительно</div>
+<div class="subtitle" style="margin:-10px 0 15px">Добавляйте любые услуги из прайса. Поиск работает по названию и категории.</div>
+<div id="additionalServices" class="additional-list"></div>
+<button class="add-profile" onclick="addAdditional()">＋ Добавить услугу из прайса</button>
+</div></div>
+
+<div class="summary"><div class="card"><div class="total-label">ИТОГО К ОПЛАТЕ</div><div class="total" id="total">0 ₽</div><div class="subtitle">Предварительная стоимость</div><div class="divider"></div>
+<div class="row"><span>Полотно</span><span id="rMaterial">0 ₽</span></div>
+<div class="row"><span>Профили</span><span id="rProfiles">0 ₽</span></div>
+<div class="row"><span>Углы</span><span id="rCorners">0 ₽</span></div>
+<div class="row"><span>Свет</span><span id="rLight">0 ₽</span></div>
+<div class="row"><span>Доп. элементы</span><span id="rExtra">0 ₽</span></div>
+<div class="row"><span>Дополнительные услуги</span><span id="rAdditional">0 ₽</span></div>
+<div class="row"><span>Доп. работы</span><span id="rWorks">0 ₽</span></div>
+<div class="row"><span>Скидка</span><span id="rDiscount">0 ₽</span></div>
+<div class="row total-row"><span>Итого</span><span id="rTotal">0 ₽</span></div>
+<div class="actions"><button class="btn primary" onclick="saveCalculation()">Сохранить расчёт</button><button class="btn secondary" onclick="window.print()">PDF</button></div>
+</div></div></div></section>
+
+<section id="history" class="page"><div class="topbar"><div><h1>История расчётов</h1><div class="subtitle">Сохранённые расчёты клиентов</div></div><div class="status" id="historyCount">0 расчётов</div></div>
+<div class="card"><div id="historyBody"></div></div></section>
+
+<section id="price" class="page"><div class="topbar"><div><h1>Прайс</h1><div class="subtitle">Прайс-лист ArtPro из загруженного файла «Прайс Арт Про»</div></div><div class="status">● Синхронизирован с расчётом</div></div>
+<div class="card">
+<div class="price-search"><input id="priceSearch" placeholder="🔎  Поиск по прайсу: например, «карниз», «свет», «Бизон»" oninput="renderPrices()"></div>
+<div class="price-wrap"><table class="price-table"><thead><tr><th>Категория</th><th>Позиция</th><th>Цена из файла</th><th>Цена для расчёта</th></tr></thead><tbody id="priceBody"></tbody></table></div>
+<div class="note">В таблицу загружены позиции из предоставленного Numbers-файла. Цена в колонке «Цена для расчёта» является рабочей: любое её изменение сразу используется калькулятором.</div></div></section>
+
+</main></div>
 <script>
-const prices=[
- {cat:'Полотно',name:'ПВХ матовое',unit:'м²',price:850,key:'material'},
- {cat:'Полотно',name:'ПВХ сатиновое',unit:'м²',price:950},
- {cat:'Полотно',name:'ПВХ глянцевое',unit:'м²',price:1050},
- {cat:'Полотно',name:'Тканевое',unit:'м²',price:1450},
- {cat:'Монтаж',name:'Монтаж потолка',unit:'м²',price:450,key:'install'},
- {cat:'Периметр',name:'Монтаж по периметру',unit:'м',price:90,key:'perimeter'},
- {cat:'Углы',name:'Дополнительный угол',unit:'шт',price:120,key:'corner'},
- {cat:'Свет',name:'Точечный светильник',unit:'шт',price:450,key:'spot'},
- {cat:'Свет',name:'Люстра',unit:'шт',price:700,key:'chandelier'},
- {cat:'Доп. элементы',name:'Обход трубы',unit:'шт',price:300,key:'pipe'},
- {cat:'Доп. элементы',name:'Карниз / закладная',unit:'м',price:600,key:'cornice'},
- {cat:'Доп. элементы',name:'Ниша',unit:'м',price:1200,key:'niche'}
-];
-
-
-function getTotal(){
- const txt=document.getElementById('total').textContent.replace(/[^\d]/g,'');
- return Number(txt)||0;
-}
-function currentData(){
- return {
-   id: Date.now(),
-   date: new Date().toLocaleString('ru-RU'),
-   clientName: document.getElementById('clientName').value.trim() || 'Без имени',
-   clientPhone: document.getElementById('clientPhone').value.trim() || '—',
-   total: getTotal(),
-   fields: {
-     area:val('area'), perimeter:val('perimeter'), corners:val('corners'), rooms:val('rooms'),
-     spots:val('spots'), chandeliers:val('chandeliers'), pipes:val('pipes'),
-     cornice:val('cornice'), niche:val('niche'), extra:val('extra'), discount:val('discount'),
-     material:document.getElementById('material').value
-   }
- };
-}
-function getHistory(){return JSON.parse(localStorage.getItem('artpro_history')||'[]')}
-function saveCalculation(){
- const name=document.getElementById('clientName').value.trim();
- const phone=document.getElementById('clientPhone').value.trim();
- if(!name && !phone){alert('Введите имя клиента или номер телефона.');return}
- const h=getHistory(); h.unshift(currentData());
- localStorage.setItem('artpro_history',JSON.stringify(h.slice(0,100)));
- renderHistory();
- alert('Расчёт сохранён в истории.');
-}
-function renderHistory(){
- const h=getHistory(), body=document.getElementById('historyBody');
- document.getElementById('historyCount').textContent=h.length+' '+(h.length===1?'расчёт':(h.length<5?'расчёта':'расчётов'));
- if(!h.length){body.innerHTML='<div class="empty">История пока пуста.<br>Сохранённые расчёты появятся здесь.</div>';return}
- body.innerHTML=h.map(x=>`<div class="history-item">
-   <div><div class="history-name">${escapeHtml(x.clientName)}</div><div class="history-meta">${escapeHtml(x.clientPhone)} · ${x.date}</div></div>
-   <div class="history-total">${money(x.total)}</div>
-   <div class="history-actions"><button class="mini" onclick="loadCalculation(${x.id})">Открыть</button><button class="mini" onclick="deleteCalculation(${x.id})">Удалить</button></div>
- </div>`).join('');
-}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function loadCalculation(id){
- const x=getHistory().find(a=>a.id===id); if(!x)return;
- document.getElementById('clientName').value=x.clientName==='Без имени'?'':x.clientName;
- document.getElementById('clientPhone').value=x.clientPhone==='—'?'':x.clientPhone;
- Object.entries(x.fields).forEach(([k,v])=>{
-   const el=document.getElementById(k); if(el)el.value=v;
- });
- recalc(); showPage('calc',document.querySelector('.nav button'));
-}
-function deleteCalculation(id){
- const h=getHistory().filter(x=>x.id!==id); localStorage.setItem('artpro_history',JSON.stringify(h)); renderHistory();
-}
-
+const prices=[{"name": "Мат/сатин ПВХ полотно до 3,5 метров MSD Classik", "price": 600, "category": "Полотна"}, {"name": "Мат/сатин ПВХ полотно до 5,5 метров MSD Classik", "price": 650, "category": "Полотна"}, {"name": "Мат/сатин ПВХ полотно до 6,5 метров NEW", "price": 750, "category": "Полотна"}, {"name": "Мат/сатин ПВХ полотно до 3,5 метров MSD Эволюшн/Перфект/Бауфф", "price": 750, "category": "Полотна"}, {"name": "Мат/сатин ПВХ полотно до 5,5 метров MSD Эволюшн/Перфект/Бауфф", "price": 800, "category": "Полотна"}, {"name": "Мат/сатин ПВХ полотно до 6,5 метров MSD Эволюшн/Перфект/Бауфф", "price": 1000, "category": "Полотна"}, {"name": "Мат/сатин ПВХ полотно до 5,5 метров MR Tektum KM2", "price": 1300, "category": "Полотна"}, {"name": "Лак/глянец ПВХ полотно до 3,5 метров", "price": 700, "category": "Полотна"}, {"name": "Лак/глянец ПВХ полотно до 5,5 метров", "price": 850, "category": "Полотна"}, {"name": "Багет ПВХ + Тшка 1 пм , кратно 2,5 м", "price": 300, "category": "Полотна"}, {"name": "Углы шт", "price": 250, "category": "Полотна"}, {"name": "Углы парящий профиль шт", "price": 600, "category": "Полотна"}, {"name": "Углы теневой профиль шт", "price": 600, "category": "Полотна"}, {"name": "Обход трубы шт до 35 мм", "price": 500, "category": "Полотна"}, {"name": "Обход фановой трубы", "price": 900, "category": "Полотна"}, {"name": "Криволинейность пм", "price": 500, "category": "Полотна"}, {"name": "Внутренний вырез пм", "price": 500, "category": "Полотна"}, {"name": "Высота более 320 см", "price": 0.15, "category": "Полотна"}, {"name": "Брус деревянный клееный 40х30 мм кратно 2 метра с монтажом", "price": 600, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Скрытая ниша (с перегибом полотна) БП 40 кратно 2 метра", "price": 1200, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Скрытая ниша ПВХ ПК-5 гардина 2/2,5/3,2/3,6", "price": 2200, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Скрытая ниша ПК-15 гардина с затяжкой у окна кратно 2/2,5/3,2/3,6 метра", "price": 2900, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Скрытая ниша ПК-14 гардина с затяжкой у окна кратно 2/3,2 метра", "price": 3900, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Карниз для ванной однорядный Алформ Ам 1 2 м/3,2 м цена за метр", "price": 3400, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Световая линия 30 мм с рассеивателем (без светового оборудования) кратно 2 метра + монтаж диодной ленты+ торцевые заглушки", "price": 2900, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Угол или перекрестие для световой линии/ПК14/ПК15/трек", "price": 1500, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Парящий профиль алюминиевый (без светового оборудования)  кратно 2 метра + монтаж диодной ленты ПП4", "price": 2000, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Парящий профиль алюминиевый (без светового оборудования)  кратно 2 метра + монтаж диодной ленты С РАССЕИВАТЕЛЕМ FLY2 (ДЛЯ ГЛЯНЦЕВОГО КЕРАМОГРАИТА)", "price": 2000, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Контурный профиль для световых линий (без светового оборудования) кратно 2 метра + монтаж диодной ленты", "price": 2000, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Разделительный профиль алюминиевый (сепаратор) со вставкой кратно 2,5 + закладная брус деревянный", "price": 900, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Монтаж накладного трека ЗАКАЗЧИКА + закладная под накладной трек + сборка трековой системы накладного типа", "price": 1800, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Встроеный трек заказчика: Базовый профиль для встраивания накладного трека + торцевый заглушки + гарпун сдвоеный+ огарпунивание  на месте + Монтаж накладного трека ЗАКАЗЧИКА +  сборка трековой системы накладного типа. Кратно 2 метра", "price": 3800, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Угол или перекрестие для встроеного трека", "price": 1500, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Керамогранит кратно 1 пм. Спец профиль + спец сверла + работа", "price": 800, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Люк 20х20 + брус + изготовление конструкции", "price": 2000, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Карниз 3,2 метра пластиковый белый 2х или 3х рядный + монтаж", "price": 1500, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Карниз 2,4 метра пластиковый белый 2х или 3х рядный + монтаж", "price": 1300, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Карниз для Ванной АМ1 1 рядный утопленный 2 и 3,2 пм длина белый + заглушки+ двойной гарпун + крючки цена за 1 пм", "price": 2500, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Теневой профиль Бизон пластиковый + черный гарпун + монтаж профиля и сложный монтаж углов. кратно 2,5 пм", "price": 700, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Flexi евро 01 теневой + черный гарпун + монтаж профиля и сложный монтаж углов. кратно 2 пм", "price": 1100, "category": "Крепежный профиль и элементы конструкций"}, {"name": "ТЕНЕВОЙ ПРОФИЛЬ Еврокрааб", "price": "по запросу. Сложный расчет", "category": "Крепежный профиль и элементы конструкций"}, {"name": "Переход уровня ПВХ по прямой пм", "price": 3500, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Переход уровня ПВХ криволинейный пм", "price": 4000, "category": "Крепежный профиль и элементы конструкций"}, {"name": "Монтаж  закладной под люстру + монтаж простой люстры без сборки люстры", "price": 700, "category": "Монтаж осветительного оборудования"}, {"name": "Монтаж закладной под светильник стандарт (круг наружная вклейка)", "price": 700, "category": "Монтаж осветительного оборудования"}, {"name": "Монтаж закладной под светильник стандарт (круг внутренняя вклейка)", "price": 1200, "category": "Монтаж осветительного оборудования"}, {"name": "Монтаж закладной под светильник КВАДРАТ", "price": 1000, "category": "Монтаж осветительного оборудования"}, {"name": "Монтаж закладной под светильник ПРЯМОУГОЛЬНИК (165х80)", "price": 1500, "category": "Монтаж осветительного оборудования"}, {"name": "Монтаж закладной под светильник ПРЯМОУГОЛЬНИК ЗАКАЗ платформ на производстве", "price": 2000, "category": "Монтаж осветительного оборудования"}, {"name": "Монтаж светодиодной ленты пм", "price": 450, "category": "Монтаж осветительного оборудования"}, {"name": "Монтаж люстры", "price": 1200, "category": "Монтаж осветительного оборудования"}, {"name": "Монтаж закладной для безрамочного светильника", "price": 2200, "category": "Монтаж осветительного оборудования"}, {"name": "Светильник GX-53 белый + лампа Люмистар 8 ватт", "price": 450, "category": "Осветительное оборудование"}, {"name": "Светодиодная лента монохром СТАНДАРТ 9,6 Ватт 120 LED 24 Вольта катушка 5 метров теплая/нейтральная/холодная Люмистар", "price": 2200, "category": "Осветительное оборудование"}, {"name": "Светодиодная лента монохром ЯРКАЯ 14,4 Ватт 120 LED 24 Вольта катушка 5 метров теплая/нейтральная/холодная", "price": 2400, "category": "Осветительное оборудование"}, {"name": "Светодиодная лента РАЗНОЦВЕТНАЯ 14,4 Ватт 60 LED катушка 5 метров меняет цвета (нужен допомом блок питания и контроллер)", "price": 2500, "category": "Осветительное оборудование"}, {"name": "Блок питания (60-100W) PREMIUM + монтаж", "price": 2300, "category": "Осветительное оборудование"}, {"name": "Блок питания (100-200W) PREMIUM + монтаж", "price": 2500, "category": "Осветительное оборудование"}, {"name": "Блок питания (200-300W) PREMIUM + монтаж", "price": 2700, "category": "Осветительное оборудование"}, {"name": "Контроллер RGB сенсорный PREMIUM + монтаж", "price": 3500, "category": "Осветительное оборудование"}, {"name": "Блок управления светом 2 линии (делитель фаз) + монтаж", "price": 2500, "category": "Осветительное оборудование"}, {"name": "Блок управления светом 4 линии (делитель фаз) + монтаж", "price": 2800, "category": "Осветительное оборудование"}, {"name": "Блок управления светом 6 линии (делитель фаз) + монтаж", "price": 3100, "category": "Осветительное оборудование"}, {"name": "Закладная под монтаж вентелятора + монтаж вентелятора заказчика", "price": 1000, "category": "Монтаж вентеляционного оборудования"}, {"name": "Закладная под монтаж дифузора + монтаж дифузора заказчика", "price": 700, "category": "Монтаж вентеляционного оборудования"}, {"name": "Теневой дифузор без мотора 100/125", "price": 3500, "category": "Монтаж вентеляционного оборудования"}, {"name": "Теневой дифузор с мотором 100/125", "price": 6000, "category": "Монтаж вентеляционного оборудования"}, {"name": "Монтаж вент отверстия для кухонной вытяжки", "price": 500, "category": "Монтаж вентеляционного оборудования"}, {"name": "Монтаж вент клапана + вент клапан АРТ ПРО", "price": 500, "category": "Монтаж вентеляционного оборудования"}, {"name": "Шина накладной трек черный/белый Люмистар однофазный 1/2 метра 1 метр (ввод и торцевая заклушка в комплекте)", "price": 1300, "category": "Трековая система Люмистар однофазная"}, {"name": "Угловой коннектор черный/белый штука", "price": 350, "category": "Трековая система Люмистар однофазная"}, {"name": "Прямой коннектор черный/белый штука", "price": 300, "category": "Трековая система Люмистар однофазная"}, {"name": "1-фазный трековый светильник Meteor под лампу GU10 ЧЕРНЫЙ/БЕЛЫЙ", "price": 1600, "category": "Трековая система Люмистар однофазная"}, {"name": "Лампа GU10 LUMISTAR линзованная 7ВТ 3000К/4000К (угол рассеивания 38 градусов)", "price": 300, "category": "Трековая система Люмистар однофазная"}, {"name": "Линейный светильник трековый 35 Ватт 600 мм 120градусов черный/белый", "price": 3300, "category": "Трековая система Люмистар однофазная"}, {"name": "Линейный светильник Трековый 30 Ватт 60 градусов 400 мм черный/белый", "price": 3500, "category": "Трековая система Люмистар однофазная"}, {"name": "Линейный светильник Трековый 20 Ватт 60 градусов 270 мм черный/белый", "price": 3300, "category": "Трековая система Люмистар однофазная"}, {"name": "Slott-Parsek 2 метра белый/черный", "price": 21800, "category": "Трековая система Люмистар однофазная"}, {"name": "Slott-Parsek 3 метра белый/черный", "price": 32000, "category": "Трековая система Люмистар однофазная"}, {"name": "Slott80", "price": 6000, "category": "Трековая система Люмистар однофазная"}, {"name": "Углы", "price": 2500, "category": "Трековая система Люмистар однофазная"}, {"name": "Slott40", "price": 5800, "category": "Трековая система Люмистар однофазная"}, {"name": "Flexy Izi Trek01 черный трековый профиль", "price": 10400, "category": "Магнитный трек для ткани"}, {"name": "Заглушка торцевая  Izi Trek01", "price": 2000, "category": "Магнитный трек для ткани"}, {"name": "угол", "price": 2500, "category": "Магнитный трек для ткани"}, {"name": "Ткань дескор теплый / холодный", "price": 2200, "category": "ТКАНЬ"}, {"name": "Ткань JM 3,1 4,1 5,1", "price": 2700, "category": "ТКАНЬ"}, {"name": "Монтаж ткани", "price": 900, "category": "ТКАНЬ"}, {"name": "Углы", "price": 400, "category": "ТКАНЬ"}, {"name": "Теневой для ткани", "price": 3500, "category": "ТКАНЬ"}, {"name": "Монтаж люстр и светильников", "price": 900, "category": "ТКАНЬ"}, {"name": "Периметр багет пвх", "price": 450, "category": "ТКАНЬ"}, {"name": "12 ватт 24 в 2100-4000 К катушка 5 метров", "price": 8150, "category": "Мульти лента"}, {"name": "Контроллер для ленты микс", "price": 5200, "category": "Мульти лента"}, {"name": "Бесщелевой профиль Kraab 4.0 кратно 2 метрам", "price": 2800, "category": "Крааб систем"}, {"name": "Внутренний угол 4.0", "price": 800, "category": "Крааб систем"}, {"name": "Внешний угол 4.0", "price": 2800, "category": "Крааб систем"}, {"name": "Теневой профиль EUROKRAAB 2.0", "price": 1900, "category": "Крааб систем"}, {"name": "Внутренний угол 2.0", "price": 600, "category": "Крааб систем"}, {"name": "Внешний угол 2.0", "price": 1500, "category": "Крааб систем"}];
+const MAP={"canvas_matte": "Мат/сатин ПВХ полотно до 3,5 метров MSD Classik", "pvc_profile": "Багет ПВХ + Тшка 1 пм , кратно 2,5 м", "corner": "Углы шт", "corner_float": "Углы парящий профиль шт", "corner_shadow": "Углы теневой профиль шт", "pipe": "Обход трубы шт до 35 мм", "install_light": "Монтаж люстр и светильников", "spot_install": "Монтаж закладной под светильник стандарт (круг наружная вклейка)", "chandelier_install": "Монтаж люстры", "bizon": "Теневой профиль Бизон пластиковый + черный гарпун + монтаж профиля и сложный монтаж углов. кратно 2,5 пм", "flexi": "Flexi евро 01 теневой + черный гарпун + монтаж профиля и сложный монтаж углов. кратно 2 пм", "floating": "Парящий профиль алюминиевый (без светового оборудования)  кратно 2 метра + монтаж диодной ленты ПП4"};
+function findPrice(name){const p=prices.find(x=>x.name===name);return p?p.price:0}
 function money(n){return Math.round(n).toLocaleString('ru-RU')+' ₽'}
 function val(id){return Number(document.getElementById(id).value)||0}
+
+const profileOptions=[
+  {key:'pvc',label:'ПВХ с маскировкой',priceName:MAP.pvc_profile,cornerKey:'corner'},
+  {key:'bizon',label:'Теневой Бизон',priceName:MAP.bizon,cornerKey:'corner_shadow'},
+  {key:'flexi',label:'Теневой Flexi',priceName:MAP.flexi,cornerKey:'corner_shadow'},
+  {key:'floating',label:'Парящий',priceName:MAP.floating,cornerKey:'corner_float'}
+];
+
+let profiles=[
+  {type:'pvc',length:12},
+  {type:'bizon',length:10}
+];
+
+function renderProfiles(){
+ const el=document.getElementById('profiles');
+ el.innerHTML=profiles.map((p,i)=>{
+   const opt=profileOptions.find(x=>x.key===p.type);
+   return `<div class="profile-row">
+    <div class="field"><label>Тип профиля</label><select onchange="profiles[${i}].type=this.value;recalc()">${profileOptions.map(o=>`<option value="${o.key}" ${o.key===p.type?'selected':''}>${o.label} — ${money(findPrice(o.priceName))}/м</option>`).join('')}</select></div>
+    <div class="field"><label>Длина, м</label><input type="number" min="0" step="0.1" value="${p.length}" onchange="profiles[${i}].length=Number(this.value)||0;recalc()"></div>
+    <button class="icon-btn" title="Удалить" onclick="removeProfile(${i})">×</button>
+   </div>`;
+ }).join('');
+}
+function addProfile(){profiles.push({type:'pvc',length:0});renderProfiles();recalc()}
+function removeProfile(i){if(profiles.length===1)return;profiles.splice(i,1);renderProfiles();recalc()}
+
+function populateMaterials(){
+ const wanted=prices.filter(p=>/ПВХ полотно|Тканевое полотно|ПВХ/.test(p.name) && typeof p.price==='number');
+ const sel=document.getElementById('material');
+ sel.innerHTML=wanted.slice(0,30).map(p=>`<option value="${p.name}">${p.name} — ${money(p.price)}/м²</option>`).join('');
+ if(!sel.options.length)sel.innerHTML='<option value="">Нет позиций</option>';
+}
+
+
+let additionalServices=[];
+
+function priceOptionsHtml(selected=''){
+  return prices.filter(p=>typeof p.price==='number').map((p,i)=>
+    `<option value="${i}" ${String(i)===String(selected)?'selected':''}>${esc(p.name)} — ${money(p.price)}</option>`
+  ).join('');
+}
+function renderAdditional(){
+ const el=document.getElementById('additionalServices'); if(!el)return;
+ if(!additionalServices.length){el.innerHTML='<div class="subtitle">Услуги ещё не добавлены</div>';return}
+ el.innerHTML=additionalServices.map((a,i)=>{
+   const p=prices[a.priceIndex]||prices[0], unit=p?.unit||'шт';
+   return `<div class="additional-row">
+     <div class="field"><label>Услуга из прайса</label><input list="priceSuggestions" value="${esc(p?.name||'')}" placeholder="Начните вводить название" oninput="changeAdditionalBySearch(${i},this.value)"></div>
+     <div class="field"><label>Количество</label><input type="number" min="0" step="0.1" value="${a.qty}" oninput="additionalServices[${i}].qty=Number(this.value)||0;recalc()"></div>
+     <div class="cost" id="addCost${i}">${money((p?.price||0)*a.qty)} <span class="subtitle">/ ${esc(unit)}</span></div>
+     <button class="icon-btn" onclick="removeAdditional(${i})">×</button>
+   </div>`;
+ }).join('')+
+ `<datalist id="priceSuggestions">${prices.filter(p=>typeof p.price==='number').map(p=>`<option value="${esc(p.name)}"></option>`).join('')}</datalist>`;
+}
+function changeAdditionalBySearch(i,text){
+ const q=text.toLowerCase().trim();
+ const idx=prices.findIndex(p=>typeof p.price==='number' && p.name.toLowerCase()===q);
+ if(idx>=0){additionalServices[i].priceIndex=idx;renderAdditional()}
+ recalc();
+}
+function addAdditional(){
+ const first=prices.findIndex(p=>typeof p.price==='number');
+ additionalServices.push({priceIndex:first>=0?first:0,qty:1});
+ renderAdditional();recalc();
+}
+function removeAdditional(i){additionalServices.splice(i,1);renderAdditional();recalc()}
+function additionalTotal(){
+ return additionalServices.reduce((sum,a)=>{
+   const p=prices[a.priceIndex];
+   return sum+(typeof p?.price==='number'?p.price:0)*(Number(a.qty)||0);
+ },0);
+}
 function recalc(){
- const area=val('area'), per=val('perimeter'), corners=Math.max(0,val('corners')-4);
- const materialPrice=val('material');
- const price=k=>prices.find(p=>p.key===k)?.price||0;
- const material=area*materialPrice, install=area*price('install'), perimeter=per*price('perimeter'), corner=corners*price('corner');
- const light=val('spots')*price('spot')+val('chandeliers')*price('chandelier');
- const extra=val('pipes')*price('pipe')+val('cornice')*price('cornice')+val('niche')*price('niche');
- const works=val('extra'), subtotal=material+install+perimeter+corner+light+extra+works;
- const disc=subtotal*val('discount')/100, total=subtotal-disc;
+ const area=val('area'), spots=val('spots'), chand=val('chandeliers'), pipes=val('pipes');
+ const materialName=document.getElementById('material').value;
+ const material=area*findPrice(materialName);
+ let profileTotal=0;
+ let profileCorners={};
+ profiles.forEach(p=>{
+   const o=profileOptions.find(x=>x.key===p.type);
+   profileTotal+=p.length*findPrice(o.priceName);
+   profileCorners[o.cornerKey]=(profileCorners[o.cornerKey]||0)+1;
+ });
+ // Углы считаются по типам профиля; если пользователь указал 4+ углов,
+ // базовые 4 распределяются по первому профилю, остальные считаются как дополнительные.
+ const baseCorners=Math.max(0,val('corners'));
+ let cornerTotal=0;
+ const profCount=profiles.length;
+ profiles.forEach((p,i)=>{
+   const o=profileOptions.find(x=>x.key===p.type);
+   let c=i===0?baseCorners:0;
+   if(c>0) cornerTotal += c*findPrice(o.cornerKey==='corner'?MAP.corner:(o.cornerKey==='corner_float'?MAP.corner_float:MAP.corner_shadow));
+ });
+ const light=spots*findPrice(MAP.spot_install)+chand*findPrice(MAP.chandelier_install);
+ const extra=pipes*findPrice(MAP.pipe)+val('cornice')*findPrice('pvc_profile')+val('niche')*findPrice('pvc_profile');
+ const works=val('extra'), additional=additionalTotal(), subtotal=material+profileTotal+cornerTotal+light+extra+works+additional;
+ const disc=subtotal*val('discount')/100,total=subtotal-disc;
  document.getElementById('rMaterial').textContent=money(material);
- document.getElementById('rInstall').textContent=money(install);
- document.getElementById('rPerimeter').textContent=money(perimeter);
- document.getElementById('rCorners').textContent=money(corner);
+ document.getElementById('rProfiles').textContent=money(profileTotal);
+ document.getElementById('rCorners').textContent=money(cornerTotal);
  document.getElementById('rLight').textContent=money(light);
  document.getElementById('rExtra').textContent=money(extra);
+ document.getElementById('rAdditional').textContent=money(additional);
+ additionalServices.forEach((a,i)=>{const p=prices[a.priceIndex];const el=document.getElementById('addCost'+i);if(el&&p)el.innerHTML=money((p.price||0)*(a.qty||0))+' <span class="subtitle">/ '+esc(p.unit||'шт')+'</span>'});
  document.getElementById('rWorks').textContent=money(works);
  document.getElementById('rDiscount').textContent='− '+money(disc);
  document.getElementById('rTotal').textContent=money(total);
  document.getElementById('total').textContent=money(total);
 }
 function renderPrices(){
- const body=document.getElementById('priceBody'); body.innerHTML='';
- prices.forEach((p,i)=>{
-  body.innerHTML+=`<tr><td><span class="badge">${p.cat}</span></td><td>${p.name}</td><td>${p.unit}</td><td><input type="number" value="${p.price}" onchange="prices[${i}].price=Number(this.value); syncPrice(${i})"></td></tr>`;
- });
+ const body=document.getElementById('priceBody');
+ const query=(document.getElementById('priceSearch')?.value||'').toLowerCase().trim();
+ const visible=prices.map((p,i)=>({p,i})).filter(x=>!query || (x.p.name+' '+x.p.category).toLowerCase().includes(query));
+ body.innerHTML=visible.map(({p,i})=>`<tr><td><span class="badge">${esc(p.category)}</span></td><td>${esc(p.name)}</td><td>${typeof p.price==='number'?money(p.price):esc(p.price||'—')}</td><td>${typeof p.price==='number'?`<input type="number" value="${p.price}" onchange="prices[${i}].price=Number(this.value)||0;persistPrices();renderProfiles();renderAdditional();recalc()">`:'<span class="subtitle">по запросу</span>'}</td></tr>`).join('');
 }
-function syncPrice(i){
- const p=prices[i];
- if(p.key==='material'){
-   const opts=document.getElementById('material').options;
-   for(let o of opts) if(o.text===p.name)o.value=p.price;
- }
- recalc();
-}
-function addPrice(){
- const name=prompt('Название новой позиции:');
- if(!name)return;
- const price=Number(prompt('Цена:','0'))||0;
- prices.push({cat:'Дополнительно',name,unit:'шт',price});
- renderPrices();
-}
-function showPage(id,btn){
- document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
- if(btn)btn.classList.add('active');
-}
-function newCalc(){
- ['area','perimeter','corners','rooms','spots','chandeliers','pipes','cornice','niche','extra','discount'].forEach((id,i)=>{
-  const el=document.getElementById(id);
-  if(id==='area')el.value=0;
-  else if(id==='perimeter')el.value=0;
-  else if(id==='corners')el.value=4;
-  else el.value=0;
- });
- recalc();
-}
-document.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',recalc));
-renderPrices(); renderHistory(); recalc();
-</script>
-</body>
-</html>
+function persistPrices(){localStorage.setItem('artpro_prices',JSON.stringify(prices))}
+function loadPrices(){const x=localStorage.getItem('artpro_prices');if(x){try{const saved=JSON.parse(x);saved.forEach(s=>{const p=prices.find(x=>x.name===s.name);if(p&&typeof s.price==='number')p.price=s.price})}catch(e){}}}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+function currentData(){return {id:Date.now(),date:new Date().toLocaleString('ru-RU'),clientName:document.getElementById('clientName').value.trim()||'Без имени',clientPhone:document.getElementById('clientPhone').value.trim()||'—',total:document.getElementById('total').textContent,profiles:JSON.parse(JSON.stringify(profiles)),fields:{area:val('area'),perimeter:val('perimeter'),corners:val('corners'),rooms:val('rooms'),spots:val('spots'),chandeliers:val('chandeliers'),pipes:val('pipes'),cornice:val('cornice'),niche:val('niche'),extra:val('extra'),discount:val('discount'),material:document.getElementById('material').value},additional:JSON.parse(JSON.stringify(additionalServices))}}
+function getHistory(){return JSON.parse(localStorage.getItem('artpro_history')||'[]')}
+function saveCalculation(){const name=document.getElementById('clientName').value.trim(),phone=document.getElementById('clientPhone').value.trim();if(!name&&!phone){alert('Введите имя клиента или номер телефона.');return}const h=getHistory();h.unshift(currentData());localStorage.setItem('artpro_history',JSON.stringify(h.slice(0,100)));renderHistory();alert('Расчёт сохранён в истории.')}
+function renderHistory(){const h=getHistory(),body=document.getElementById('historyBody');document.getElementById('historyCount').textContent=h.length+' '+(h.length===1?'расчёт':(h.length<5?'расчёта':'расчётов'));if(!h.length){body.innerHTML='<div class="empty">История пока пуста.<br>Сохранённые расчёты появятся здесь.</div>';return}body.innerHTML=h.map(x=>`<div class="history-item"><div><div class="history-name">${esc(x.clientName)}</div><div class="history-meta">${esc(x.clientPhone)} · ${x.date}</div></div><div class="history-total">${esc(x.total)}</div><div class="history-actions"><button class="mini" onclick="loadCalculation(${x.id})">Открыть</button><button class="mini" onclick="deleteCalculation(${x.id})">Удалить</button></div></div>`).join('')}
+function loadCalculation(id){const x=getHistory().find(a=>a.id===id);if(!x)return;document.getElementById('clientName').value=x.clientName==='Без имени'?'':x.clientName;document.getElementById('clientPhone').value=x.clientPhone==='—'?'':x.clientPhone;Object.entries(x.fields).forEach(([k,v])=>{const el=document.getElementById(k);if(el)el.value=v});profiles=x.profiles||[{type:'pvc',length:val('perimeter')}];additionalServices=x.additional||[];renderProfiles();renderAdditional();recalc();showPage('calc',document.querySelector('.nav button'))}
+function deleteCalculation(id){const h=getHistory().filter(x=>x.id!==id);localStorage.setItem('artpro_history',JSON.stringify(h));renderHistory()}
+function newCalc(){document.getElementById('clientName').value='';document.getElementById('clientPhone').value='';['area','perimeter','spots','chandeliers','pipes','cornice','niche','extra','discount'].forEach(id=>document.getElementById(id).value=0);document.getElementById('corners').value=4;document.getElementById('rooms').value=1;profiles=[{type:'pvc',length:0}];additionalServices=[];renderProfiles();renderAdditional();recalc();showPage('calc',document.querySelector('.nav button'))}
+function showPage(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');}
+
+document.addEventListener('input',e=>{if(e.target.matches('input:not([onchange])'))recalc()});
+loadPrices();populateMaterials();renderPrices();renderProfiles();renderAdditional();renderHistory();recalc();
+</script></body></html>
